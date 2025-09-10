@@ -1,10 +1,16 @@
+// Load environment variables from .env file
 require("dotenv").config();
+
+// Import required modules
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+// Initialize Express app
 const app = express();
+// Parse incoming JSON requests
 app.use(express.json());
+// Enable CORS for cross-origin requests from frontend
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -12,9 +18,11 @@ app.use(
   })
 );
 
+// Import User model and bcrypt for password hashing
 const User = require("./User");
 const bcrypt = require("bcryptjs");
 
+// Connect to MongoDB database
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -23,10 +31,12 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+// Root route for health check
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+// Test routes for debugging connectivity
 app.get("/api/test", (req, res) => {
   res.json({ message: "Test route working" });
 });
